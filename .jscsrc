@@ -1,0 +1,4 @@
+{
+    "plugins": ["jscs-cappuccino"],
+    "preset": "cappuccino"
+}

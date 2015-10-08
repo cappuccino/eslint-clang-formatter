@@ -1,0 +1,8 @@
+{
+    "clangFormatter": {
+        "colors": {
+            "file": "green.bold.underline",
+            "caret": "magenta"
+        }
+    }
+}

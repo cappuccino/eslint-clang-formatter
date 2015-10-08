@@ -1,0 +1,40 @@
+{
+  "name": "eslint-clang-formatter",
+  "version": "1.0.0",
+  "description": "Formatter for eslint that follows clang error style",
+  "homepage": "https://github.com/cappuccino/eslint-clang-formatter",
+  "keywords": [
+    "eslint",
+    "formatter"
+  ],
+  "contributors": [
+    "Aparajita Fishman (http://www.aparajita.com)"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cappuccino/eslint-clang-formatter.git"
+  },
+  "bugs": "https://github.com/cappuccino/eslint-clang-formatter/issues",
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "main": "clang.js",
+  "scripts": {
+    "lint": "node_modules/.bin/eslint clang.js test/*.js && node_modules/.bin/jscs clang.js test/*.js",
+    "test": "npm run lint && node test/test.js",
+    "generate-fixtures": "node test/test.js generate"
+  },
+  "dependencies": {
+    "chalk": "^1.1.0"
+  },
+  "devDependencies": {
+    "eslint": ">=0.9.0",
+    "eslint-config-cappuccino": ">=1.1.13",
+    "jscs": ">=1.8.0",
+    "jscs-cappuccino": "^1.0.0"
+  },
+  "peerDependencies": {
+    "eslint": ">=0.9.0"
+  }
+}

@@ -1,0 +1,9 @@
+language: node_js
+sudo: false  # use container-based infrastructure
+
+node_js:
+  - "stable"
+  - "0.12"
+
+matrix:
+  fast_finish: true

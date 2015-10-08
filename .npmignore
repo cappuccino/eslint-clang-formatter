@@ -1,0 +1,8 @@
+.editorconfig
+.eslintrc
+.jscsrc
+.npmignore
+.travis.yml
+
+.idea/
+test/
