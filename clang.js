@@ -1,9 +1,10 @@
 "use strict";
 
 var chalk = require("chalk"),
-    CLIEngine = require("eslint").CLIEngine,
+    fs = require("fs"),
+    homedir = require("home-dir"),
     path = require("path"),
-    util = require("util");
+    pathExists = require("path-exists").sync;
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -19,15 +20,16 @@ function pluralize(count)
     return (count === 1 ? "" : "s");
 }
 
-var colorMap = {
-    file: chalk.cyan.bold,
-    location: chalk.gray.bold,
+var defaultColorMap = {
+    file: chalk.green.bold,
+    location: chalk.bold,
     error: chalk.red.bold,
     warning: chalk.yellow.bold,
-    message: chalk.gray.bold,
+    message: chalk.bold,
+    rule: chalk.bold.dim,
     separator: chalk.dim,
     source: null,
-    caret: chalk.green.bold
+    caret: chalk.magenta.bold
 };
 
 function setColorMap(map)
@@ -48,27 +50,31 @@ function setColorMap(map)
         return parsedStyle;
     }
 
-    Object.keys(map).forEach(function(key)
-    {
-        if (colorMap.hasOwnProperty(key))
-        {
-            var style = parseStyle(map[key]);
+    var colors = {};
 
-            if (style !== undefined)
-                colorMap[key] = style;
-        }
+    Object.keys(defaultColorMap).forEach(function(key)
+    {
+        var color;
+
+        if (map.hasOwnProperty(key))
+            color = parseStyle(map[key]);
+
+        colors[key] = color || defaultColorMap[key];
     });
+
+    return colors;
 }
 
 /**
  * Given a color name in colorMap and some text, return a colorized version
  * if chalk is enabled.
  * @param {boolean} colorize
+ * @param {object} colorMap
  * @param {string} color - Key in colorMap.
  * @param {string} text - Text to colorize.
  * @returns {string}
  */
-function colorizeText(colorize, color, text)
+function colorizeText(colorize, colorMap, color, text)
 {
     if (colorize)
     {
@@ -87,14 +93,44 @@ function colorizeText(colorize, color, text)
 
 function shouldColorize(config)
 {
-    return typeof config.colorize === "boolean" ? config.colorize : chalk.enabled;
+    return (config && typeof config.colorize === "boolean") ? config.colorize : chalk.enabled;
+}
+
+function loadConfig()
+{
+    var dir = process.cwd(),
+        home = homedir(),
+        visitedHome,
+        rcPath;
+
+    while (true)
+    {
+        visitedHome = dir === home;
+        rcPath = path.join(dir, ".clangformatterrc");
+
+        if (pathExists(rcPath))
+            return JSON.parse(fs.readFileSync(rcPath, "utf8"));
+
+        var previousDir = dir;
+
+        dir = path.dirname(dir);
+
+        // If it hasn't changed, we were at the root
+        if (dir === previousDir)
+            break;
+    }
+
+    rcPath = path.join(home, ".clangformatterrc");
+
+    if (!visitedHome && pathExists(rcPath))
+        return JSON.parse(fs.readFileSync(rcPath, "utf8"));
+
+    return {};
 }
 
 //------------------------------------------------------------------------------
 // Public Interface
 //------------------------------------------------------------------------------
-
-var cli = new CLIEngine({ useEslintrc: true });
 
 module.exports = function(results, config)
 {
@@ -102,7 +138,20 @@ module.exports = function(results, config)
         total = 0,
         errors = 0,
         warnings = 0,
-        summaryColor = "warning";
+        summaryColor = "warning",
+        colorMap = defaultColorMap,
+        showRule = true;
+
+    if (!config)
+        config = loadConfig();
+
+    if (typeof config.showRule === "boolean")
+        showRule = config.showRule;
+
+    if (typeof config.colors === "object")
+        colorMap = setColorMap(config.colors);
+
+    var colorize = shouldColorize(config);
 
     results.forEach(function(result)
     {
@@ -113,46 +162,37 @@ module.exports = function(results, config)
 
         total += messages.length;
 
-        if (!config)
-            config = cli.getConfigForFile(result.filePath).clangFormatter || {};
-
-        var colorize = shouldColorize(config),
-            showRule = typeof config.showRule === "boolean" ? config.showRule : false;
-
-        if (typeof config.colors === "object")
-            setColorMap(config.colors);
-
         messages.forEach(function(message)
         {
             var severity;
 
             if (message.fatal || message.severity === 2)
             {
-                severity = colorizeText(colorize, "error", "error");
+                severity = colorizeText(colorize, colorMap, "error", "error");
                 summaryColor = "error";
                 ++errors;
             }
             else
             {
-                severity = colorizeText(colorize, "warning", "warning");
+                severity = colorizeText(colorize, colorMap, "warning", "warning");
                 ++warnings;
             }
 
-            var source = message.source ? colorizeText(colorize, "source", message.source) : "",
-                file = colorizeText(colorize, "file", path.relative("", result.filePath)),
-                sep = colorizeText(colorize, "separator", ":"),
-                rule = showRule ? " [" + message.ruleId + "]" : "",
-                msg = colorizeText(colorize, "message", message.message + rule),
+            var source = message.source ? colorizeText(colorize, colorMap, "source", message.source) : "",
+                file = colorizeText(colorize, colorMap, "file", path.relative("", result.filePath)),
+                sep = colorizeText(colorize, colorMap, "separator", ":"),
+                rule = showRule ? colorizeText(colorize, colorMap, "rule", " [" + message.ruleId + "]") : "",
+                msg = colorizeText(colorize, colorMap, "message", message.message) + rule,
                 location = "";
 
             if (message.column !== undefined)
-                location = colorizeText(colorize, "location", message.line + ":" + message.column) + sep;
+                location = colorizeText(colorize, colorMap, "location", message.line + ":" + message.column) + sep;
 
             output += file + sep + location + " " + severity + sep + " " + msg;
 
             if (source)
             {
-                var caret = message.source.substr(0, message.column - 1).replace(/./g, " ") + colorizeText(colorize, "caret", "^");
+                var caret = message.source.substr(0, message.column - 1).replace(/./g, " ") + colorizeText(colorize, colorMap, "caret", "^");
 
                 output += "\n" + source + "\n" + caret;
             }
@@ -163,18 +203,23 @@ module.exports = function(results, config)
 
     if (total > 0)
     {
-        var baseConfig = config || (cli.getConfigForFile(".").clangFormatter || {}),
-            colorize = shouldColorize(baseConfig);
+        var summary = "\n";
 
-        output += colorizeText(colorize, summaryColor, util.format(
-            "\n\u2716 %d problem%s (%d error%s, %d warning%s)",
-            total,
-            pluralize(total),
-            errors,
-            pluralize(errors),
-            warnings,
-            pluralize(warnings))
-        );
+        if (warnings > 0)
+            summary += warnings + " warning" + pluralize(warnings);
+
+        if (errors > 0)
+        {
+            if (warnings > 0)
+                summary += " and ";
+
+            summary += errors + " error" + pluralize(errors);
+        }
+
+        if (summary)
+            summary += " found.";
+
+        output += colorizeText(colorize, colorMap, summaryColor, summary);
     }
 
     return total > 0 ? output : "";

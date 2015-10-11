@@ -4,6 +4,7 @@ sudo: false  # use container-based infrastructure
 node_js:
   - "stable"
   - "0.12"
+  - "0.10"
 
 matrix:
   fast_finish: true

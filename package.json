@@ -17,24 +17,24 @@
   },
   "bugs": "https://github.com/cappuccino/eslint-clang-formatter/issues",
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=0.10"
   },
   "main": "clang.js",
   "scripts": {
-    "lint": "node_modules/.bin/eslint clang.js test/*.js && node_modules/.bin/jscs clang.js test/*.js",
+    "lint": "eslint clang.js test/*.js && jscs clang.js test/*.js",
     "test": "npm run lint && node test/test.js",
-    "generate-fixtures": "node test/test.js generate"
+    "generate-fixtures": "node test/test.js generate",
+    "postversion": "git push && git push --tags && npm publish"
   },
   "dependencies": {
-    "chalk": "^1.1.0"
+    "chalk": "^1.1.0",
+    "home-dir": "^1.0.0",
+    "path-exists": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": ">=0.9.0",
+    "eslint": "^1.6.0",
     "eslint-config-cappuccino": ">=1.1.13",
-    "jscs": ">=1.8.0",
-    "jscs-cappuccino": "^1.0.0"
-  },
-  "peerDependencies": {
-    "eslint": ">=0.9.0"
+    "jscs": "^2.3.0",
+    "jscs-cappuccino": "^1.0.4"
   }
 }

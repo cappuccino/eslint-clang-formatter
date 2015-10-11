@@ -1,75 +1,80 @@
-jscs-clang-reporter
-===================
+eslint-clang-formatter
+======================
 
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
-This reporter for [JSCS](http://jscs.info) provides more concise output than the JSCS `console` reporter, but more information than the JSCS one-line reporters. The output is formatted and colored similar to the error output from `clang`.
+This formatter for [ESLint](http://eslint.org) provides more informative output than the standard `eslint` formatters, and allows you to customize the colors used. The output is formatted similar to the error output from `clang`.
 
-Here is sample output in non-verbose mode and verbose mode (passing -v on command line):
+Here is sample output with the default colors:
 
 ![ ](docs/report.png)
-
-![ ](docs/report-verbose.png)
-
 
 
 ## Installation
 
 Install into your project with `npm` in the usual way:
 
-`npm i jscs-clang-reporter`
-
+```sh
+npm i eslint-clang-formatter
+```
 
 
 ## Usage
 
-To use with JSCS, specify the path to the reporter on the command line:
+To use with JSCS, specify the path to the formatter on the command line:
 
-`jscs -r node_modules/jscs-clang-reporter lib`
+```sh
+eslint -f node_modules/eslint-clang-formatter lib
+```
 
-Note that the reporter will obey the `--no-colors` flag if it passed on the command line.
+Note that the formatter will obey the `--no-color` flag if it passed on the command line.
 
-If you are using the reporter programmatically, for example with [gulp-jscs](https://www.npmjs.com/package/gulp-jscs), simply pass the same path:
+If you are using the formatter programmatically, for example with [gulp-eslint](https://www.npmjs.com/package/gulp-eslint), simply pass the same path:
 
 ```js
-gulp.task("default", () => {
-    return gulp.src("src/app.js")
-        .pipe(jscs())
-        .pipe(jscs.reporter("node_modules/jscs-clang-reporter"));
+gulp.task("lint", function () {
+    return gulp.src(["lib/**/*.js"])
+        .pipe(eslint())
+        .pipe(eslint.format("node_modules/eslint-formatter", process.stdout))
+        .pipe(eslint.failAfterError());
 });
 ```
 
 
-
 ## Customization
 
-If you using this reporter programmatically and the interface supports passing options to the reporter, you can configure the behavior of the reporter by passing an options object. There are two possible options, `colorize` and `colors`.
+You can configure the behavior of the formatter by creating a `.clangformatterrc` file in JSON format. The formatter searches for this file starting at the current working directory, then traversing up to the root of the filesystem. If the current user's home directory was not traversed, that is searched as well.
+
+There are several possible properties in `.clangformatterrc`:
 
 
 ### colorize
 
-If this property is set to a truthy value, the output of the reporter will be colorized, and not colorized otherwise.
+Output is colorized by default, unless `--no-color` is passed on the command line. If colorizing was not disabled on the command line and this property is set to a boolean, this property will be used to determine colorizing.
 
 
 ### colors
 
-You can use this property to customize the colors used by the reporter. If `colorize` is not truthy, this property is ignored.
+Use this property to customize the colors used by the formatter. If colorization is off, this property is ignored.
 
 By default, the elements of each error message are colorized with the following [chalk](https://github.com/chalk/chalk) colors (`null` means no colorizing):
 
 Name      | Color
 :-------  | :-----
-file      | red.bold
-location  | gray.bold
-message   | gray.bold
+file      | green.bold
+location  | bold
+error     | red.bold
+warning   | yellow.bold
+message   | bold
+rule      | bold.dim
 separator | dim
 source    | null
-caret     | green.bold
+caret     | magenta.bold
 
 A formatted error message has the following structure:
 
 ```
-<file>:<location>: <message>
+<file>:<location>: <error|warning>: <message> <rule>
 <source>
 <caret>
 ```
@@ -78,39 +83,44 @@ The elements of the message are:
 
 - **file** - The filename where the error occurred.
 - **location** - The one-based line:column within the entire source where the issue occurred.
+- **error | warning** - Either the text "error" or "warning", depending on the message type.
 - **message** - The error message.
+- **rule** - The name of the offending rule in `[]`.
 - **source** - The line of code within the file where the issue occurred.
 - **caret** - `^` marks the position within `<source>` where the error occurred.
 - **separator** - The ":" characters in the first line are colorized with the "separator" color in the color map.
 
-You can customize these colors by passing your own color map in the `colors` options property. The map should be an object whose keys are one of the element names listed above, and whose values can either be strings or `chalk` functions. If you use strings, they should be the equivalent of the dotted `chalk` function, but without the "chalk." prefix.
+In addition to the messages, a summary is appended at the end. The color of the summary will "error" if there were errors, or "warning" if there were only warnings.
 
-Here are two equivalent color maps:
+You can customize the colors by creating your own color map in the `colors` property. The map should be an object whose keys are one of the element names listed above, and whose values are the equivalent of the dotted `chalk` function, but without the "chalk." prefix.
 
-```js
+Here is a sample color map:
+
+```json
 {
-    file: "bgBlue.yellow",
-    location: "blue.underline",
-    message: "bgGreen.bold",
-    separator: "green",
-    source: "inverse",
-    caret: "cyan.bold"
-}
-
-{
-    file: chalk.bgBlue.yellow,
-    location: chalk.blue.underline,
-    message: chalk.bgGreen.bold,
-    separator: chalk.green,
-    source: chalk.inverse,
-    caret: chalk.cyan.bold
+    "colors": {
+        "file": "bgBlue.yellow",
+	     "location": "blue.underline",
+	     "separator": "green",
+	     "error": "white.bold.bgRed",
+	     "warning": "white.bold.bgYellow",
+	     "message": "bgGreen.bold",
+	     "source": "inverse",
+	     "caret": "cyan.bold"
+	 }
 }
 ```
 
 You do not need to set all of the values in the map if you only wish to override a few colors; only the elements whose keys are in the map will be affected. To turn off colorizing for an element, pass `null` as the value. Invalid element keys or styles will cause that item in the map to be ignored.
 
-[npm-url]: https://npmjs.org/package/jscs-clang-reporter
-[npm-image]: http://img.shields.io/npm/v/jscs-clang-reporter.svg?style=flat
 
-[travis-url]: https://travis-ci.org/cappuccino/jscs-clang-reporter
-[travis-image]: https://travis-ci.org/cappuccino/jscs-clang-reporter.svg?branch=master
+### showRule
+
+By default, the offending rule name is shown after the error message. If this property is present and is `false`, the rule name is not displayed.
+
+
+[npm-url]: https://npmjs.org/package/eslint-clang-formatter
+[npm-image]: http://img.shields.io/npm/v/eslint-clang-formatter.svg?style=flat
+
+[travis-url]: https://travis-ci.org/cappuccino/eslint-clang-formatter
+[travis-image]: https://travis-ci.org/cappuccino/eslint-clang-formatter.svg?branch=master

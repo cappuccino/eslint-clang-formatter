@@ -1,5 +1,3 @@
 {
-    "clangFormatter": {
-        "colorize": false
-    }
+    "colorize": false
 }

@@ -16,28 +16,31 @@ function writeFixture(name, data)
 {
     console.log(name);
 
-    return fs.writeFileSync(path.join(baseDir, name + ".txt"), data, { encoding: "utf8" });
+    return fs.writeFileSync(path.join(baseDir, name + ".txt"), data);
 }
 
-function check(configName)
+function check(configName, method)
 {
-    var options = {};
-
-    if (configName)
-        options.configFile = path.join(baseDir, configName + ".json");
-
-    var cli = new eslint.CLIEngine(options),
-        config = cli.getConfigForFile(options.configFile || ".").clangFormatter || {};
-
-    if (!("colorize" in config))
-        config.colorize = true;
+    var configPath = path.join(baseDir, configName + ".json"),
+        cli = new eslint.CLIEngine(),
+        configFile = fs.readFileSync(configPath, "utf8"),
+        config;
 
     if (!formatter)
         formatter = cli.getFormatter("./clang.js");
 
-    var result = cli.executeOnFiles([baseDir]);
+    if (method === "rc")
+        fs.writeFileSync(".clangformatterrc", configFile);
+    else
+        config = JSON.parse(configFile);
 
-    return formatter(result.results, config);
+    var result = cli.executeOnFiles([baseDir]),
+        output = formatter(result.results, config);
+
+    if (method === "rc")
+        fs.unlinkSync(".clangformatterrc");
+
+    return output;
 }
 
 function compareWithFixture(name, text)
@@ -53,13 +56,21 @@ var generate = process.argv[2] === "generate";
 if (generate)
     console.log("Generating fixtures...");
 
-["", "no-color", "show-rule", "custom-colors"].forEach(function(configName)
+fs.readdirSync(baseDir).forEach(function(configName)
 {
-    var output = check(configName),
-        name = "test" + (configName ? "-" + configName : "");
+    if (path.extname(configName) === ".json")
+    {
+        configName = path.basename(configName, path.extname(configName));
 
-    if (generate)
-        writeFixture(name, output);
-    else
-        compareWithFixture(name, output);
+        ["rc", "api"].forEach(function(method)
+        {
+            var output = check(configName, method),
+                name = "test-" + configName + "-" + method;
+
+            if (generate)
+                writeFixture(name, output);
+            else
+                compareWithFixture(name, output);
+        });
+    }
 });
