@@ -3,7 +3,6 @@
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{jscs-clang-reporter node_modules}" />
     <file url="PROJECT" libraries="{Node.js v4.1.2 Core Modules, jscs-clang-reporter node_modules}" />
-    <includedPredefinedLibrary name="ECMAScript 6" />
     <includedPredefinedLibrary name="Node.js Globals" />
     <excludedPredefinedLibrary name="HTML" />
   </component>

@@ -35,7 +35,7 @@ If you are using the formatter programmatically, for example with [gulp-eslint](
 gulp.task("lint", function () {
     return gulp.src(["lib/**/*.js"])
         .pipe(eslint())
-        .pipe(eslint.format("node_modules/eslint-formatter", process.stdout))
+        .pipe(eslint.format("node_modules/eslint-clang-formatter", process.stdout))
         .pipe(eslint.failAfterError());
 });
 ```

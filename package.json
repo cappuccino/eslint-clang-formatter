@@ -19,9 +19,9 @@
   "engines": {
     "node": ">=0.10"
   },
-  "main": "clang.js",
+  "main": "lib/index.js",
   "scripts": {
-    "lint": "eslint clang.js test/*.js && jscs clang.js test/*.js",
+    "lint": "eslint lib test/*.js && jscs lib test/*.js",
     "test": "npm run lint && node test/test.js",
     "generate-fixtures": "node test/test.js generate",
     "postversion": "git push && git push --tags && npm publish"

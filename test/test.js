@@ -27,7 +27,7 @@ function check(configName, method)
         config;
 
     if (!formatter)
-        formatter = cli.getFormatter("./clang.js");
+        formatter = cli.getFormatter("lib/index.js");
 
     if (method === "rc")
         fs.writeFileSync(".clangformatterrc", configFile);
