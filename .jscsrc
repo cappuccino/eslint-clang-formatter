@@ -1,4 +1,5 @@
 {
     "plugins": ["jscs-cappuccino"],
-    "preset": "cappuccino"
+    "preset": "cappuccino",
+    "excludeFiles": ["test/fixtures"]
 }

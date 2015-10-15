@@ -1,7 +1,7 @@
 eslint-clang-formatter
 ======================
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Build status][appveyor-image]][appveyor-url]
 
 This formatter for [ESLint](http://eslint.org) provides more informative output than the standard `eslint` formatters, and allows you to customize the colors used. The output is formatted similar to the error output from `clang`.
 
@@ -124,3 +124,6 @@ By default, the offending rule name is shown after the error message. If this pr
 
 [travis-url]: https://travis-ci.org/cappuccino/eslint-clang-formatter
 [travis-image]: https://travis-ci.org/cappuccino/eslint-clang-formatter.svg?branch=master
+
+[appveyor-url]: https://ci.appveyor.com/project/aparajita/eslint-clang-formatter
+[appveyor-image]: https://ci.appveyor.com/api/projects/status/xh3kb5bwieomq565?svg=true

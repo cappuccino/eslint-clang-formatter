@@ -1,10 +1,14 @@
 language: node_js
-sudo: false  # use container-based infrastructure
 
+# Use container-based infrastructure
+sudo: false
+
+# node versions to test
 node_js:
-  - "stable"
+  - "4"
   - "0.12"
   - "0.10"
 
+# If any version fails, cancel the others
 matrix:
   fast_finish: true

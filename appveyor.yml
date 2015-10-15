@@ -1,0 +1,38 @@
+# Version format
+version: "{build}"
+
+# node versions to test against
+environment:
+  matrix:
+    - nodejs_version: "4"
+    - nodejs_version: "0.12"
+    - nodejs_version: "0.10"
+
+# If any node versions fail, stop the others
+matrix:
+  fast_finish: true
+
+# Tags are a separate commit, don't bother building them
+skip_tags: true
+
+# Install runtime environment
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - set CI=true
+  - npm -g install npm@latest
+  - set PATH=%APPDATA%\npm;%PATH%
+  - npm install
+
+# Download a zip of the repo
+shallow_clone: true
+
+# Don't need the repo history
+clone_depth: 1
+
+# Nothing to build before testing
+build: off
+
+test_script:
+  - node --version
+  - npm --version
+  - npm test
