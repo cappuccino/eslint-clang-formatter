@@ -1,7 +1,7 @@
 {
     "colorize": true,
     "colors": {
-        "file": "cyan.bold.underline",
+        "file": "blue.bold.underline",
         "warning": "magenta.bold",
         "caret": "white.bgGreen"
     }

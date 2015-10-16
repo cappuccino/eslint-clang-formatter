@@ -65,7 +65,7 @@ fs.readdirSync(baseDir).forEach(function(configName)
         ["rc", "api"].forEach(function(method)
         {
             var output = check(configName, method),
-                name = "test-" + configName + "-" + method;
+                name = configName + "-" + method;
 
             if (generate)
                 writeFixture(name, output);
