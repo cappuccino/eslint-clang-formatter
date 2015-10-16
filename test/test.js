@@ -32,7 +32,7 @@ function check(configName, method)
     if (method === "rc")
         fs.writeFileSync(".clangformatterrc", configFile);
     else
-        config = JSON.parse(configFile);
+        config = { clangFormatter: JSON.parse(configFile) };
 
     var result = cli.executeOnFiles([baseDir]),
         output = formatter(result.results, config);
