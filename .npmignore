@@ -3,6 +3,7 @@
 .jscsrc
 .npmignore
 .travis.yml
+appveyor.yml
 
 .idea/
 docs/
