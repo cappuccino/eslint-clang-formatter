@@ -1,6 +1,6 @@
 {
   "name": "eslint-clang-formatter",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Formatter for eslint that follows clang error style",
   "homepage": "https://github.com/cappuccino/eslint-clang-formatter",
   "keywords": [
