@@ -43,17 +43,55 @@ gulp.task("lint", function () {
 
 ## Customization
 
-You can configure the behavior of the formatter by creating a `.clangformatterrc` file in JSON format. The formatter searches for this file starting at the current working directory, then traversing up to the root of the filesystem. If the current user's home directory was not traversed, that is searched as well.
+You can configure the behavior of the formatter with a config object. By default, the formatter looks for a config object in a `.clangformatterrc` file. The formatter searches for this file starting at the current working directory, then traversing up to the root of the filesystem. If the current user's home directory was not traversed, that is searched as well.
 
-There are several possible properties in `.clangformatterrc`:
+A sample `.clangformatterrc` looks like this:
+
+```json
+{
+    "colorize": true,
+    "colors": {
+        "file": "blue.bold.underline",
+        "warning": "magenta.bold",
+        "caret": "white.bgGreen"
+    },
+    "showRule": false
+}
+```
+
+If you are calling the formatter directly in your code, you can pass a config object with a `"clangFormatter"` property, which should be a formatter config object. For example:
+
+```js
+var eslint = require("eslint");
+
+var cli = new eslint.CLIEngine(),
+    formatter = cli.getFormatter("node_modules/eslint-clang-formatter"),
+    result = cli.executeOnFiles(["lib"]),
+    config = {
+        clangFormatter: {
+            colors: {
+                file: "green",
+                message: "magenta.bold"
+            }
+        }
+    },
+    output = formatter(result.results, config);
+```
+
+Passing a config object directly overrides `.clangformatterrc`.
 
 
-### colorize
+### Config properties
+
+There are several possible properties in a formatter config object:
+
+
+#### colorize
 
 Output is colorized by default, unless `--no-color` is passed on the command line. If colorizing was not disabled on the command line and this property is set to a boolean, this property will be used to determine colorizing.
 
 
-### colors
+#### colors
 
 Use this property to customize the colors used by the formatter. If colorization is off, this property is ignored.
 
@@ -61,15 +99,15 @@ By default, the elements of each error message are colorized with the following 
 
 Name      | Color
 :-------  | :-----
-file      | green.bold
-location  | bold
+file      | cyan
+location  | null
 error     | red.bold
 warning   | yellow.bold
 message   | bold
-rule      | bold.dim
+rule      | gray.bold
 separator | dim
 source    | null
-caret     | magenta.bold
+caret     | green.bold
 
 A formatted error message has the following structure:
 
@@ -114,7 +152,7 @@ Here is a sample color map:
 You do not need to set all of the values in the map if you only wish to override a few colors; only the elements whose keys are in the map will be affected. To turn off colorizing for an element, pass `null` as the value. Invalid element keys or styles will cause that item in the map to be ignored.
 
 
-### showRule
+#### showRule
 
 By default, the offending rule name is shown after the error message. If this property is present and is `false`, the rule name is not displayed.
 

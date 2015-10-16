@@ -1,11 +1,11 @@
 
-[36m[1mtest/fixtures/test1.js[22m[39m[2m:[22m[1m7:9[22m[2m:[22m [31m[1merror[22m[39m[2m:[22m [1mUnexpected space between function name and paren.[22m
+[36mtest/fixtures/test1.js[39m[2m:[22m7:9[2m:[22m [31m[1merror[22m[39m[2m:[22m [1mUnexpected space between function name and paren.[22m
 if(bad) worse ();
         [32m[1m^[22m[39m
-[36m[1mtest/fixtures/test2.js[22m[39m[2m:[22m[1m3:10[22m[2m:[22m [31m[1merror[22m[39m[2m:[22m [1m"bad" is defined but never used[22m
+[36mtest/fixtures/test2.js[39m[2m:[22m3:10[2m:[22m [31m[1merror[22m[39m[2m:[22m [1m"bad" is defined but never used[22m
 function bad() {
          [32m[1m^[22m[39m
-[36m[1mtest/fixtures/test2.js[22m[39m[2m:[22m[1m4:19[22m[2m:[22m [33m[1mwarning[22m[39m[2m:[22m [1mMissing space before value for key "one".[22m
+[36mtest/fixtures/test2.js[39m[2m:[22m4:19[2m:[22m [33m[1mwarning[22m[39m[2m:[22m [1mMissing space before value for key "one".[22m
     let a = { one:1 };
                   [32m[1m^[22m[39m
 [31m[1m
