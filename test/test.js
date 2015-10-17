@@ -70,7 +70,16 @@ fs.readdirSync(baseDir).forEach(function(configName)
             if (generate)
                 writeFixture(name, output);
             else
+            {
                 compareWithFixture(name, output);
+
+                // Also compare rc version to API version, they should be the same
+                if (method === "rc")
+                {
+                    output = readFixture(name);
+                    compareWithFixture(configName + "-api", output);
+                }
+            }
         });
     }
 });
