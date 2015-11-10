@@ -32,9 +32,10 @@
     "path-exists": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^1.7.0",
+    "chalk": "^1.1.1",
+    "eslint": "^1.9.0",
     "eslint-config-cappuccino": ">=1.1.13",
-    "jscs": "^2.3.0",
+    "jscs": "^2.5.0",
     "jscs-cappuccino": "^1.0.4"
   }
 }

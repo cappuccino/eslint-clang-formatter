@@ -5,6 +5,7 @@ sudo: false
 
 # node versions to test
 node_js:
+  - "5"
   - "4"
   - "0.12"
   - "0.10"

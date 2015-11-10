@@ -1,7 +1,9 @@
 eslint-clang-formatter
 ======================
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Build status][appveyor-image]][appveyor-url]
+[![NPM version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Build status][appveyor-image]][appveyor-url]
 
 This formatter for [ESLint](http://eslint.org) provides more informative output than the standard `eslint` formatters, and allows you to customize the colors used. The output is formatted similar to the error output from `clang`.
 
@@ -21,7 +23,7 @@ npm i eslint-clang-formatter
 
 ## Usage
 
-To use with JSCS, specify the path to the formatter on the command line:
+To use with `eslint`, specify the path to the formatter on the command line:
 
 ```sh
 eslint -f node_modules/eslint-clang-formatter lib
@@ -158,7 +160,7 @@ By default, the offending rule name is shown after the error message. If this pr
 
 
 [npm-url]: https://npmjs.org/package/eslint-clang-formatter
-[npm-image]: http://img.shields.io/npm/v/eslint-clang-formatter.svg?style=flat
+[npm-image]: http://img.shields.io/npm/v/eslint-clang-formatter.svg
 
 [travis-url]: https://travis-ci.org/cappuccino/eslint-clang-formatter
 [travis-image]: https://travis-ci.org/cappuccino/eslint-clang-formatter.svg?branch=master
