@@ -1,8 +1,8 @@
 ---
-    extends: cappuccino
+  extends: cappuccino
 
-    # We aren't using ES6, so disable these rules
-    rules:
-        no-var: 0
-        prefer-arrow-callback: 0
-        prefer-template: 0
+  # We aren't using ES6, so disable these rules
+  rules:
+    no-var: 0
+    prefer-arrow-callback: 0
+    prefer-template: 0
