@@ -3,7 +3,7 @@ eslint-clang-formatter
 
 [![NPM version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
-[![Build status][appveyor-image]][appveyor-url]
+[![Dependencies status][dependencies-image]][dependencies-url]
 
 This formatter for [ESLint](http://eslint.org) provides more informative output than the standard `eslint` formatters, and allows you to customize the colors used. The output is formatted similar to the error output from `clang`.
 
@@ -159,11 +159,11 @@ You do not need to set all of the values in the map if you only wish to override
 By default, the offending rule name is shown after the error message. If this property is present and is `false`, the rule name is not displayed.
 
 
+[npm-image]: http://img.shields.io/npm/v/eslint-clang-formatter.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/eslint-clang-formatter
-[npm-image]: http://img.shields.io/npm/v/eslint-clang-formatter.svg
 
+[travis-image]: https://img.shields.io/travis/cappuccino/eslint-clang-formatter.svg?style=flat-square
 [travis-url]: https://travis-ci.org/cappuccino/eslint-clang-formatter
-[travis-image]: https://travis-ci.org/cappuccino/eslint-clang-formatter.svg?branch=master
 
-[appveyor-url]: https://ci.appveyor.com/project/aparajita/eslint-clang-formatter
-[appveyor-image]: https://ci.appveyor.com/api/projects/status/xh3kb5bwieomq565?svg=true
+[dependencies-image]: https://img.shields.io/gemnasium/cappuccino/eslint-clang-formatter.svg?style=flat-square
+[dependencies-url]: https://gemnasium.com/cappuccino/eslint-clang-formatter
