@@ -1,5 +1,5 @@
 .editorconfig
-.eslintrc
+.eslintrc.yml
 .jscsrc
 .npmignore
 .travis.yml
