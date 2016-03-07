@@ -22,7 +22,7 @@ function writeFixture(name, data)
 function check(configName, method)
 {
     var configPath = path.join(baseDir, configName + ".json"),
-        cli = new eslint.CLIEngine(),
+        cli = new eslint.CLIEngine({ rulesDir: "./node_modules/eslint-config-cappuccino/lib/rules" }),
         configFile = fs.readFileSync(configPath, "utf8"),
         config;
 
@@ -58,7 +58,7 @@ if (generate)
 
 fs.readdirSync(baseDir).forEach(function(configName)
 {
-    if (path.extname(configName) === ".json")
+    if (configName !== ".eslintrc.json" && path.extname(configName) === ".json")
     {
         configName = path.basename(configName, path.extname(configName));
 

@@ -1,6 +1,7 @@
 "use strict";
 
-function bad() {
+function bad()
+{
     let a = { one:1 };
     let b = { two: 2 };
 

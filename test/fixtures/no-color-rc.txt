@@ -1,12 +1,15 @@
 
+test/fixtures/test1.js:7:1: error: Expected space(s) after "if". [keyword-spacing]
+if(bad) worse ();
+^
 test/fixtures/test1.js:7:9: error: Unexpected space between function name and paren. [no-spaced-func]
 if(bad) worse ();
         ^
-test/fixtures/test2.js:3:10: error: "bad" is defined but never used [no-unused-vars]
-function bad() {
+test/fixtures/test2.js:3:10: error: 'bad' is defined but never used [no-unused-vars]
+function bad()
          ^
-test/fixtures/test2.js:4:19: warning: Missing space before value for key "one". [key-spacing]
+test/fixtures/test2.js:5:19: warning: Missing space before value for key 'one'. [key-spacing]
     let a = { one:1 };
                   ^
 
-1 warning and 2 errors found.
+1 warning and 3 errors found.

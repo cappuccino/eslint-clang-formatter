@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/eslint-clang-formatter.iml" filepath="$PROJECT_DIR$/.idea/eslint-clang-formatter.iml" />
       <module fileurl="file://$USER_HOME$/Development/Libs/cappuccino/eslint-clang-formatter/.idea/eslint-clang-formatter.iml" filepath="$USER_HOME$/Development/Libs/cappuccino/eslint-clang-formatter/.idea/eslint-clang-formatter.iml" />
     </modules>
   </component>
