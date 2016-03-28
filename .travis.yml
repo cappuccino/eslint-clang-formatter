@@ -7,8 +7,6 @@ sudo: false
 node_js:
   - "5"
   - "4"
-  - "0.12"
-  - "0.10"
 
 # If any version fails, cancel the others
 matrix:
