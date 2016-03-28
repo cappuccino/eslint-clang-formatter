@@ -33,8 +33,8 @@
   },
   "devDependencies": {
     "chalk": "^1.1.1",
-    "eslint": "^2.3.0",
-    "eslint-config-cappuccino": "^1.3.2",
+    "eslint": "^2.5.3",
+    "eslint-config-cappuccino": "^1.3.7",
     "jscs": "^2.11.0",
     "jscs-cappuccino": "^1.1.0"
   }
